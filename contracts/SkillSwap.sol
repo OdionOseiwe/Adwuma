@@ -55,10 +55,10 @@ contract SkillSwap {
         emit UserRegistered(msg.sender, _userName);
     }
 
-    function postSkillExchange(string memory _skillOffered, string memory _skillRequested, uint256 _amountForSkill) public {
+    function postSkillExchange(string memory _skillOffered, string memory _skillRequested, uint256 _amountForSkill) public returns(uint256){
         require(bytes(users[msg.sender].userName).length != 0, "User not registered");
-        
         exchangeCounter++;
+        uint256 newId = exchangeCounter;
         skillExchanges[exchangeCounter] = SkillExchange({
             id: exchangeCounter,
             requester: msg.sender,
@@ -76,6 +76,7 @@ contract SkillSwap {
         bool sent = USDT.transferFrom(msg.sender,address(this),_amountForSkill);
         require(sent, "failed to transfer USDT");
         emit SkillExchangePosted(exchangeCounter, msg.sender, _skillOffered, _skillRequested);
+        return newId;
     }
 
     function acceptSkillExchange(uint256 _id) public {
@@ -98,8 +99,10 @@ contract SkillSwap {
         require(exchange.id == _id, "Skill exchange not found");
         require(exchange.isCompleted == false, "Skill exchange already completed");
         require(exchange.requester == msg.sender || exchange.offerer == msg.sender, "Only participants can complete");
+        uint256 _amountForSkill = exchange.amountForSkill;
         exchange.amountForSkill = 0;
-        bool sent = USDT.transfer(exchange.offerer,exchange.amountForSkill);
+        require(USDT.balanceOf(address(this)) >= _amountForSkill,"insufffiecient funds");
+        bool sent = USDT.transfer(exchange.offerer,_amountForSkill);
         require(sent, "failed to transfer USDT");
         exchange.isCompleted = true;
 
