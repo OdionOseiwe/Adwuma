@@ -1,4 +1,4 @@
-       
+
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
@@ -43,8 +43,19 @@ contract SkillSwap {
     }
 
     function registerUser(string memory _userName) public {
+        // Ensure the user name is not empty.
+        require(bytes(_userName).length > 0, "Username cannot be empty");
+
+        // Enforce length constraints for the user name (e.g., between 3 and 32 characters).
+        require(bytes(_userName).length >= 3, "Username too short");
+        require(bytes(_userName).length <= 32, "Username too long");
+
+        // Check that the user has not already been registered.
         require(bytes(users[msg.sender].userName).length == 0, "User already registered");
-        
+
+        // If there are additional character set or formatting validations, include them here.
+
+        // Proceed to register the user.
         users[msg.sender] = User({
             userAddress: msg.sender,
             userName: _userName,
