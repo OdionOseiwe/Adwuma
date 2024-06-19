@@ -11,5 +11,5 @@ module.exports = buildModule("LockModule", (m) => {
   return {Skillswap };
 });
 
-// skillswap 0xBF7823f67A9bde2FBA0cE79749335B010bD71722
+// skillswap 0xec275C9a85436AE22D760b94184b424C24fC24bF
 // USDT 0xFbba553bd8a051EA83D4Ac145b00c5F3827E2335

@@ -9,7 +9,7 @@ module.exports = {
     }
   },
   etherscan: {
-    apiKey: {celo: "488ZSIVA1ZSDCQCU66FTBI7TEGC7NNGVVF"},
+    apiKey: {celo: ""},
     customChains: [
       {
         network: "celo",
